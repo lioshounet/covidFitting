@@ -4,11 +4,11 @@ Deadth = 9308.0  # 死亡患者数量
 Exposed = 0.0  # 潜伏者
 N = 1400000000.0  # 全国人口
 N1 = 7589499.0  # 香港人口
-Susceptible = N1 - Infectious  # 易感染者
-r1 = 12.0  # 开始发病初期，接触病患的人数  ?
+Susceptible = N1 - Infectious - Deadth  # 易感染者
+r1 = 1.0  # 开始发病初期，接触病患的人数  ?
 
-a = Infectious / N1  # 潜伏者患病概率
-B = 0.6  # 感染概率  ?
+a = 0.125  # 潜伏者患病概率
+B = 0.01  # 感染概率  ?
 
 y1 = 0.00126404  # 治愈率/天
 
@@ -28,17 +28,21 @@ sArr[0] = Susceptible
 dArr = ['0'] * 100
 dArr[0] = Deadth
 
+
 def outZero(n):
-    if(n<0.0):
-        n=0
+    if (n < 0.0):
+        n = 0
     return n
+
 
 def nextDay(day):
     # 易感人数迭代
     sArr[day + 1] = sArr[day] - r1 * B * iArr[day] * sArr[day] / N1
     sArr[day + 1] = outZero(sArr[day + 1])
     # 潜伏者人数迭代
-    eArr[day + 1] = eArr[day] + r1 * B * sArr[day] * iArr[day] / N1 - a * eArr[day]
+    eArr[day + 1] = 20
+    # eArr[day + 1] = eArr[day] + r1 * B * sArr[day] * iArr[day] / N1 - a * rArr[day]
+    eArr[day + 1] = outZero(eArr[day + 1])
     # 患病人数迭代
     iArr[day + 1] = iArr[day] + a * eArr[day] - (y1 + k1) * iArr[day]
     # 康复人数迭代
